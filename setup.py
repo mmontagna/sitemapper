@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 setup(
   name = 'sitemapper',
   packages = ['sitemapper'],
-  version = '1.1.0',
+  version = '1.1.1',
   description = '''
   A tool for generating xml sitemaps from a list of urls.
   ''',
