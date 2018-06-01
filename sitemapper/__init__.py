@@ -30,7 +30,7 @@ def create_sitemap_index(sitemap_root, sitemap_files, output_file):
   sitemapindex = ET.Element("sitemapindex", xmlns="http://www.sitemaps.org/schemas/sitemap/0.9")
   for sitemap_file in sitemap_files:
     sitemap_node = ET.SubElement(sitemapindex, "sitemap")
-    loc = ET.SubElement(sitemap_node, "loc").text = "{}/{}".format(sitemap_root.rstrip('/'), sitemap_file)
+    loc = ET.SubElement(sitemap_node, "loc").text = "{}/{}".format(sitemap_root.rstrip('/'), os.path.split(sitemap_file)[-1])
     lastmod = ET.SubElement(sitemap_node, "lastmod").text = now
   tree = ET.ElementTree(sitemapindex)
   indent(sitemapindex, level=0)
