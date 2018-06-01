@@ -25,7 +25,7 @@ def indent(elem, level=0):
     return elem        
 
 
-def create_sitemap_index(sitemap_root, sitemap_files, output_file):
+def create_sitemap_index(sitemap_root, sitemap_files, output_file, pretty_print=False):
   now = datetime.utcnow().isoformat()
   sitemapindex = ET.Element("sitemapindex", xmlns="http://www.sitemaps.org/schemas/sitemap/0.9")
   for sitemap_file in sitemap_files:
@@ -33,12 +33,13 @@ def create_sitemap_index(sitemap_root, sitemap_files, output_file):
     loc = ET.SubElement(sitemap_node, "loc").text = "{}/{}".format(sitemap_root.rstrip('/'), os.path.split(sitemap_file)[-1])
     lastmod = ET.SubElement(sitemap_node, "lastmod").text = now
   tree = ET.ElementTree(sitemapindex)
-  indent(sitemapindex, level=0)
+  if pretty_print:
+    indent(sitemapindex, level=0)
   print("Writing sitemapindex to {}".format(output_file))
   tree.write(output_file, xml_declaration=True, encoding='utf-8', method="xml")
 
 
-def create_sitemap(urls, output_file, changefreq='weekly'):
+def create_sitemap(urls, output_file, changefreq='weekly', pretty_print=False):
   now = datetime.utcnow().date().isoformat()
   urlset = ET.Element("urlset", xmlns="http://www.sitemaps.org/schemas/sitemap/0.9")
   for url in urls:
@@ -46,12 +47,13 @@ def create_sitemap(urls, output_file, changefreq='weekly'):
     loc = ET.SubElement(url_node, "loc").text = url
     changefreq = ET.SubElement(url_node, "changefreq").text = changefreq
   tree = ET.ElementTree(urlset)
-  indent(urlset, level=0)
+  if pretty_print:
+    indent(urlset, level=0)
   print("Writing sitemap to {}".format(output_file))
   tree.write(output_file, xml_declaration=True, encoding='utf-8', method="xml")
   return output_file
 
-def create_sitemaps(sitemap_root, urls, output_directory, max_urls_per_sitemap=45000, changefreq='weekly'):
+def create_sitemaps(sitemap_root, urls, output_directory, max_urls_per_sitemap=45000, changefreq='weekly', pretty_print=False):
   """
   sitemap_root: The path where sitemaps will be served from eg http://example.com/
   urls: a list of urls.
@@ -68,8 +70,8 @@ def create_sitemaps(sitemap_root, urls, output_directory, max_urls_per_sitemap=4
   sitemap_files = []
   for url_chunk in chunks(urls, max_urls_per_sitemap):
     sitemap_file = os.path.join(output_directory, 'sitemap{}.xml'.format(i))
-    create_sitemap(url_chunk, sitemap_file, changefreq=changefreq)
+    create_sitemap(url_chunk, sitemap_file, changefreq=changefreq, pretty_print=pretty_print)
     sitemap_files.append(sitemap_file)
     i += 1
   sitemapindex = os.path.join(output_directory, 'sitemapindex.xml')
-  create_sitemap_index(sitemap_root, sitemap_files, sitemapindex)
+  create_sitemap_index(sitemap_root, sitemap_files, sitemapindex, pretty_print=pretty_print)

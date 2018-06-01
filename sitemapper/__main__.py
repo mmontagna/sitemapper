@@ -13,6 +13,7 @@ def main():
   parser.add_argument('--change-freq', default='weekly', type=str)
   parser.add_argument('--max-urls-per-sitemap', default=45000, type=int)
   parser.add_argument('--sitemap-root', required=True, type=str)
+  parser.add_argument('--pretty-print', action='store_true')
 
   args = parser.parse_args()
 
@@ -21,7 +22,8 @@ def main():
     open(args.input_file).read().split("\n"),
     args.output_directory,
     max_urls_per_sitemap=args.max_urls_per_sitemap,
-    changefreq=args.change_freq
+    changefreq=args.change_freq,
+    pretty_print=args.pretty_print
     )
 
 
