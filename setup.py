@@ -2,6 +2,8 @@ import os
 from setuptools import setup, find_packages
 
 
+dir_path = os.path.dirname(os.path.realpath(__file__))
+
 VERSION = open(os.path.join(dir_path, 'VERSION')).read()
 
 setup(
