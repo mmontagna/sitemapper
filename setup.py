@@ -2,10 +2,12 @@ import os
 from setuptools import setup, find_packages
 
 
+VERSION = open(os.path.join(dir_path, 'VERSION')).read()
+
 setup(
   name = 'sitemapper',
   packages = ['sitemapper'],
-  version = '1.1.1',
+  version = VERSION,
   description = '''
   A tool for generating xml sitemaps from a list of urls.
   ''',
@@ -26,10 +28,10 @@ setup(
       'Programming Language :: Python :: 3',
       'Programming Language :: Python :: 3.6',
   ),
-  package_data={'': ['LICENSE']},
+  data_files = [('', ['LICENSE', 'VERSION'])],
   include_package_data=True,
   python_requires=">=2.7",
-  license=open('LICENSE').read(),
+  license=open(os.path.join(dir_path, 'LICENSE')).read(),
   install_requires=[
 
   ],
